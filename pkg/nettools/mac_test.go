@@ -26,9 +26,12 @@ func TestMacStripper(t *testing.T) {
 }
 
 func TestMacFormatter(t *testing.T) {
-	have := "111122223333"
+	have := "11112222333"
 	want := "1111.2222.3333"
-	got := nettools.MacFormatter(have, "dot")
+	got, err := nettools.MacFormatter(have, "dot")
+	if err != nil {
+		t.Errorf("invalid mac address %s", have)
+	}
 	if want != got {
 		t.Errorf("want: %s, got: %s", want, got)
 	}
