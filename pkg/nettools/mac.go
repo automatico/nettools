@@ -5,10 +5,10 @@ import (
 	"strings"
 )
 
-// MacStripper takes a string and removes
+// MACStripper takes a string and removes
 // typical seperators used in MAC address
 // formats.
-func MacStripper(mac string) string {
+func MACStripper(mac string) string {
 	seperators := []rune{':', '-', '.'}
 	var res strings.Builder
 	for _, c := range mac {
@@ -25,16 +25,16 @@ func MacStripper(mac string) string {
 	return res.String()
 }
 
-// StringInserter takes a source string and inserts
+// stringInserter takes a source string and inserts
 // a string (s) every N distance (d).
-func StringInserter(source string, s string, d int) string {
+func stringInserter(source string, s string, d int) string {
 	for i := d; i < len(source); i += d + 1 {
 		source = source[:i] + s + source[i:]
 	}
 	return source
 }
 
-// MacFormatter takes a mac and a desired
+// MACFormatter takes a mac and a desired
 // mac format and returns the mac in the
 // desired format
 // Valid Formats:
@@ -42,8 +42,8 @@ func StringInserter(source string, s string, d int) string {
 // eui = 11:11:22:22:33:33
 // unix = 11-11-22-22-33-33
 // dot = 1111.2222.3333
-func MacFormatter(mac string, format string) (string, error) {
-	stripped := MacStripper(mac)
+func MACFormatter(mac string, format string) (string, error) {
+	stripped := MACStripper(mac)
 
 	if len(stripped) != 12 {
 		return "", fmt.Errorf("not a valid mac address: %s", mac)
@@ -54,11 +54,13 @@ func MacFormatter(mac string, format string) (string, error) {
 	case "raw":
 		formatted = stripped
 	case "eui":
-		formatted = StringInserter(stripped, ":", 2)
+		formatted = stringInserter(stripped, "-", 2)
 	case "unix":
-		formatted = StringInserter(stripped, ":", 2)
+		formatted = stringInserter(stripped, ":", 2)
 	case "dot":
-		formatted = StringInserter(stripped, ".", 4)
+		formatted = stringInserter(stripped, ".", 4)
+	default:
+		return "", fmt.Errorf("not a valid format: %s", format)
 	}
 	return formatted, nil
 }
