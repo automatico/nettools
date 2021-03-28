@@ -6,21 +6,22 @@ import (
 	"strings"
 )
 
-func ASNPlainToDot(asn string) string {
+func ASNPlainToDot(asn string) (string, error) {
 	i, _ := strconv.Atoi(asn)
+	if (i < 0) || (i > 4294967295) {
+		return "", fmt.Errorf("not a valid asn: %d", i)
+	}
 	var asnDot string
 	switch {
-	case i == 65536:
-		asnDot = "1.0"
-	case i < 65536:
+	case i <= 65535:
 		asnDot = fmt.Sprintf("0.%d", i)
-	case i > 65536:
+	case i >= 65536:
 		decimal := i / 65536
 		higherOrder := int(decimal)
 		lowerOrder := i - higherOrder*65536
 		asnDot = fmt.Sprintf("%d.%d", higherOrder, lowerOrder)
 	}
-	return asnDot
+	return asnDot, nil
 }
 
 func ASNDotToPlain(asn string) string {
