@@ -6,6 +6,8 @@ import (
 	"strings"
 )
 
+// ASNPlainToDot converts a BGP ASN number from
+// plain format to dot notation.
 func ASNPlainToDot(asn string) (string, error) {
 	i, _ := strconv.Atoi(asn)
 	if (i < 0) || (i > 4294967295) {
@@ -24,6 +26,8 @@ func ASNPlainToDot(asn string) (string, error) {
 	return asnDot, nil
 }
 
+// ASNDotToPlain converts a BGP ASN from dot
+// notation to plain format.
 func ASNDotToPlain(asn string) string {
 	split := strings.Split(asn, ".")
 	higherOrder, _ := strconv.Atoi(split[0])
