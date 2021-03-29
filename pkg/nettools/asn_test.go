@@ -45,11 +45,15 @@ func TestASNDotToPlain(t *testing.T) {
 		{have: "1.0", want: "65536", expectFail: false},
 		{have: "1.10", want: "65546", expectFail: false},
 		{have: "2.10", want: "131082", expectFail: false},
+		{have: "99999", want: "", expectFail: true},
 	}
 	for _, tc := range testCases {
-		got := nettools.ASNDotToPlain(tc.have)
+		got, err := nettools.ASNDotToPlain(tc.have)
 		if tc.want != got {
 			t.Errorf("want: %s, got: %s", tc.want, got)
+		}
+		if err != nil && !tc.expectFail {
+			t.Fatal(err)
 		}
 	}
 }

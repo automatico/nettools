@@ -28,7 +28,10 @@ func ASNPlainToDot(asn string) (string, error) {
 
 // ASNDotToPlain converts a BGP ASN from dot
 // notation to plain format.
-func ASNDotToPlain(asn string) string {
+func ASNDotToPlain(asn string) (string, error) {
+	if !strings.Contains(asn, ".") {
+		return "", fmt.Errorf("asn not in dot notation: %s", asn)
+	}
 	split := strings.Split(asn, ".")
 	higherOrder, _ := strconv.Atoi(split[0])
 	lowerOrder, _ := strconv.Atoi(split[1])
@@ -42,5 +45,5 @@ func ASNDotToPlain(asn string) string {
 		asnPlain = fmt.Sprintf("%d", total)
 	}
 
-	return asnPlain
+	return asnPlain, nil
 }
