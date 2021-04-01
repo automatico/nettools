@@ -6,10 +6,10 @@ import (
 	"github.com/automatico/nettools/pkg/nettools"
 )
 
-func TestExpandVLANs(t *testing.T) {
+func TestVLANExpand(t *testing.T) {
 	have := "1-4"
 	want := "1,2,3,4"
-	got := nettools.ExpandVLANs(have)
+	got := nettools.VLANExpand(have)
 	if want != got {
 		t.Errorf("want: %s, got: %s", want, got)
 	}
